@@ -13,27 +13,27 @@ Direct Dependencies:
 
 ## Routes
 
-### 1. `/ping`
+### 1. /ping
 
 - Description: This route serves as a health check endpoint to check if the application is running and healthy.
 - Method: GET
 - Response: JSON-encoded response with a success message.
 
-### 2. `/signup`
+### 2. /signup
 
 - Description: Allows users to register by providing their email, password, username, and display name in JSON format.
 - Method: POST
 - Request Body: JSON with email, password, username, and displayname.
 - Response: JSON response indicating the success or failure of the registration process.
 
-### 3. `/login`
+### 3. /login
 
 - Description: Handles user authentication by expecting email and password in JSON format. If authentication is successful, it sets a JWT token in the cookie.
 - Method: POST
 - Request Body: JSON with email and password.
 - Response: JSON response with the JWT token upon successful login.
 
-### 4. `/dummy`
+### 4. /dummy
 
 - Description: This route demonstrates a protected page that requires authentication. Users must be logged in using the "/login" route to access this endpoint.
 - Method: GET
