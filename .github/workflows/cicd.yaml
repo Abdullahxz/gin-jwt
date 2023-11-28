@@ -1,0 +1,69 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - 'develop'
+
+jobs:
+  CI:
+    name: Build and Push Docker image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Include unit tests here
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: abdullahxy/goapp:latest
+
+  CD:
+    name: Deploy API
+    needs:
+      - CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy EC2
+        run: |
+          echo "SSH into server or bastion client... "
+          echo "docker stop goapp"
+          echo "docker rm goapp"
+          echo "docker pull abdullahxy/goapp:latest"
+          echo "docker run -d --name goapp -p 3000:80 abdullahxy/goapp:latest"
+          echo "docker image rm abdullahxy/goapp:latest"
+
+      - name: Deploy Kubernetes
+        run: |
+          echo "helm repo add go-application <link to helm chart>"
+          echo "helm repo update"
+          echo "Set up kube config... "
+          echo "helm upgrade --install --atomic --cleanup-on-fail --wait --timeout 600s
+                <k8s deployment name>  \
+                --namespace=<k8s namespace name> \
+                --set image=abdullahxy/goapp:latest \
+                go-application\go-app"
+
+  Health-Check:
+    name: Deploy API
+    needs:
+      - CD
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ping API
+        run: |
+          echo "Make an HTTP request to health check path using curl or any other utility... "
+          echo "If response in 2xx range do nothing else return non zero exit code"
+          echo "As non zero exit code will fail this job hence pipeline fails"

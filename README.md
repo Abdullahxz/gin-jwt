@@ -11,6 +11,29 @@ Direct Dependencies:
 - Bcrypy
 - Golang-jwt
 
+## CI/CD architecture
+
+Platform: Github Actions
+
+The pipeline is triggered by a push commit in `develop` branch. This includes the PRs merged into the branch. `develop` branch is a protected branch also known as the integration branch. All feature branches should be checked out and merged back from `develop` branch after being tested and approved by the relevent code owners. Currently CI/CD setup performs the following steps:
+
+### CI
+- Checkout repository
+- Perform unit testing and linting (no unit tests in project as of this moment)
+- Login to Docker Hub
+- Builds Docker image using approved code
+- Pushes Docker image to docker hub
+
+### CD
+- Deploy to EC2 (Explained all the steps, Does not actually deploy)
+- Deploy to Kubernetes (Explained all the steps, Does not actually deploy)
+
+### Health check
+- Make an HTTP request to health check url using curl or any other utility
+- If response is in 2xx range then returns 0 else return non zero exit code
+- As non zero exit code will fail this job hence pipeline fails
+
+
 ## Routes
 
 ### 1. /ping
