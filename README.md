@@ -2,7 +2,7 @@
 
 ## Overview
 
-A skeleton web app to demonstrate JWT authentication in GO using Gin.
+Skeleton code for API with JWT authentication in GO.
 
 Direct Dependencies:
 - Gin
